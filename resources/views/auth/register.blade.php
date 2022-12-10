@@ -205,26 +205,16 @@
                 password_confirmation:password_confirmation,
               },
               success:function(response){
-                var  token = response.data;
-                localStorage.setItem('token', JSON.stringify(token));
-                toastr.options = {
-                        "closeButton":false,
-                        "debug":false,
-                        "newestOnTop":false,
-                        "progressBar":true,
-                        "positionClass":"toast-top-right",
-                        "preventDuplicates":true,
-                        "onclick":null,
-                        "showDuration":"300",
-                        "hideDuration":"1000",
-                        "timeOut":"120000",
-                        "extendedTimeOut":"1000",
-                        "showEasing":"swing",
-                        "hideEasing":"linear",
-                        "showMethod":"fadeIn",
-                        "hideMethod":"fadeOut"
-                    }
+                // var  token = response.data;
+                // localStorage.setItem('token', JSON.stringify(token));
+                localStorage.setItem('token', response.data);
+                if(response.success == 'true'){
                     location.href = '/home', toastr.success(response['message']);
+                }
+                else{
+                    toastr.error(response['message']);
+                }
+
               }
             });
         });
