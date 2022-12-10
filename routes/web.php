@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\UserController;
 use App\Models\Task;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -16,18 +17,14 @@ use App\Http\Controllers\Frontend\TaskController;
 |
 */
 
-// Route::get('/', function () {
-//     $tasks = Task::latest()->paginate(10);
-//     return view('index', compact('tasks'));
-// });
+
 Route::get('/', function () {
     return view('auth.login');
 });
-// Route::middleware('auth:api')->group(function() {
-Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Auth::routes();
 
 Route::get('/home', [TaskController::class, 'view']);
 Route::get('/index', [TaskController::class, 'index']);
-// });
+Route::get('/my/tasks', [TaskController::class, 'myTasksIndex']);
+

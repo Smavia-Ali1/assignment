@@ -44,16 +44,11 @@
                                             <a href="#" class="btn btn-default edit-task">
                                                 <i class="fa fa-edit"></i>
                                             </a>
-                                            {{-- <a href="{{route('show', ['id' => encrypt($task->id)])}}" class="btn btn-default">
-                                                <i class="fa fa-edit"></i>
-                                            </a> --}}
+
                                             <a href="javascript:void(0)" data-id="{{encrypt($task->id)}}" onclick="return confirm('Are you sure?')" class="btn btn-default delete-task">
                                                 <i class="fa fa-trash"></i>
                                             </a>
-                                            {{-- <a  href="{{route('delete', ['id' => encrypt($task->id), 'action' => 'delete'])}}"
-                                                onclick="return confirm('Are you sure?')" class="btn btn-default">
-                                                <i class="fa fa-trash"></i>
-                                            </a> --}}
+
                                         </td>
                                     </tr>
                                 @endforeach

@@ -35,7 +35,7 @@
                     <label class="label125">Title</label>
                     <div class="form-group">
                         <input class="form-control required" id="edit_title"  name="title" type="text"
-                            autocomplete="off" required>
+                            autocomplete="off">
                     </div>
                     <label class="label125">Description</label>
                     <div class="form-group">
@@ -99,7 +99,7 @@
             let title = $('#title').val();
             let description = $('#description').val();
             $.ajaxSetup({
-                    headers: {"Authorization": localStorage.getItem('token')}
+                headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
             });
             $.ajax({
               url: "/api/create/task",
@@ -129,7 +129,7 @@
                         "showMethod":"fadeIn",
                         "hideMethod":"fadeOut"
                     }
-                    location.href = '/home',
+                    location.href = '/api/view/all/tasks',
                     toastr.success(response['message']);
               },
               error: function(response) {
@@ -173,7 +173,7 @@
                 $('.edit_task').on('submit', function(e){
                     var id = $('#edit_id').val();
                     $.ajaxSetup({
-                        headers: {"Authorization": localStorage.getItem('token')}
+                        headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
                     });
                     $.ajax({
                         url: "/api/update/task/"+ id,
@@ -208,7 +208,7 @@
             var id =   $(this).attr('data-id');
             var URL = "{{url('/api/delete/task')}}/" + id;
             $.ajaxSetup({
-                    headers: {"Authorization": localStorage.getItem('token')}
+                headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
             });
             $.ajax({
                 type: 'get',
@@ -259,7 +259,7 @@
         var status = $(this).prop('checked') == true ? 'Completed' : 'Pending';
         var id = $(this).data('id');
         $.ajaxSetup({
-                    headers: {"Authorization": localStorage.getItem('token')}
+                headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
             });
         $.ajax({
                 type: "GET",
@@ -301,6 +301,9 @@
         $('tr.row1').each(function() {
             order[$(this).data('id')] = $(this).index();
         });
+        $.ajaxSetup({
+                headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
+            });
         $.ajax({
         url: URL,
         type: 'POST',
@@ -330,6 +333,48 @@
         }
       });
 
+      $(document).ready(function() {
+            $("#logout-form").click(function() {
+                var URL = "{{url('/api/user/logout')}}";
+            $.ajaxSetup({
+                headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
+            });
+            $.ajax({
+                type: 'post',
+                url: URL,
+                success: function (response) {
+                    console.log('logout');
+                    location.href = '/', toastr.success(response['message']);
+              },
+            })
+            });
+        });
+
+        myOwnTasks();
+        function myOwnTasks(){
+            var URL = "{{url('/api/my/tasks')}}";
+            $.ajaxSetup({
+                headers: {"Authorization": `Bearer ${localStorage.getItem('token')}`}
+            });
+            $.ajax({
+                type: 'get',
+                url: URL,
+                dataType: 'json',
+                success: function (response) {
+                    // console.log(response.tasks);
+                    $.each(response.tasks,function(key,task){
+                        $("#myownTasks").append('<tr>\
+                                <td>'+task.id+'</td>\
+                                <td>'+task.title+'</td>\
+                                <td>'+task.description+'</td>\
+                                <td>'+task.order+'</td>\
+                                <td>'+task.status+'</td>\
+                            </tr>'
+                        );
+                    });
+              },
+            });
+        }
 
 
   </script>
